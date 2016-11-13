@@ -68,6 +68,8 @@ public class AI extends BaseAI
 		super.ended(won, reason);
 	}
 
+
+	public List<Cowboy> joblessCowboys;
 	public String activeCowboyId = null;
 
 	public HashMap<String, CowboyHelper> cowboysToHelpers = new HashMap<String, CowboyHelper>();
@@ -78,14 +80,6 @@ public class AI extends BaseAI
 	{
 		List<CowboyHelper> cowboysWithJobs = new ArrayList<CowboyHelper>();
 
-		List<Cowboy> joblessCowboys = new ArrayList<Cowboy>();
-
-		for(int i = 0; i < this.player.cowboys.size(); i++)
-		{
-			Cowboy cowboy = this.player.cowboys.get(i);
-			if(!cowboy.isDead)
-			    joblessCowboys.add(cowboy);
-		}
 
 		List<Furnishing> goallessPianos = new ArrayList<Furnishing>();
 
@@ -197,6 +191,18 @@ public class AI extends BaseAI
 		System.out.println("Start of my turn: " + this.game.currentTurn);
 
 
+	// Maintain global jobless list 
+	
+	joblessCowboys = new ArrayList<Cowboy>();
+
+	for(int i = 0; i < this.player.cowboys.size(); i++)
+	{
+		Cowboy cowboy = this.player.cowboys.get(i);
+		if(!cowboy.isDead)
+		    joblessCowboys.add(cowboy);
+	}
+
+
 	// Generates all valid goals
 
 	// 
@@ -278,6 +284,15 @@ public class AI extends BaseAI
 	{
 		cowboyHelper.Act();
 	}
+
+		System.out.println("Putting " + joblessCowboys.size() + " idle cowboys to work");
+		
+	for (CowboyHelper cowboyHelper : GeneratePianoGoals())
+ 	{
+		cowboyHelper.Act();
+	}
+
+
 
 		System.out.println("Ending my turn.");
 
